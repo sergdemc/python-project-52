@@ -10,7 +10,7 @@ setup:
 	make migrate
 
 start:
-	poetry run python manage.py runserver 0.0.0.0:8000
+	poetry run python manage.py runserver 0.0.0.0:8080
 
 check:
 	poetry check
@@ -28,3 +28,7 @@ test-coverage:
 
 deploy:
 	git push main
+
+requirements:
+	poetry export -f requirements.txt --output requirements.txt
+
