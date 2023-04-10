@@ -18,25 +18,59 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/users/">{% translate "Users" %}</a>
-          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'list_users' %}">{% translate "Users" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% translate "Statuses" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% translate "Labels" %}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">{% translate "Tasks" %}</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'list_users' %}">{% translate "Users" %}</a>
+            </li>
+          {% endif %}
         </ul>
         <ul class="navbar-nav">
+          {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="/login/">{% translate "Enter" %}</a>
+              <a class="nav-link" href="{% url 'logout' %}">{% translate "Log out" %}</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">{% translate "Enter" %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/users/create/">{% translate "Registration" %}</a>
+              <a class="nav-link" href="{% url 'create_users' %}">{% translate "Registration" %}</a>
             </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
+
+    <div class="container wrapper flex-grow-1">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                {{ message.message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
 
     {% block content %}
 
     {% endblock %}
 
+    </div>
     <footer>
       <div class="container my-5 pt-4 border-top">
         <a target="_blank" href="https://ru.hexlet.io">Hexlet</a>

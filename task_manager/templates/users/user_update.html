@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+
+{% block content %}
+
+      <h1 class="my-4">
+          {% translate 'Change user' %}
+      </h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {{ field }}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                </div>
+            {% endfor %}
+          <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="{% translate 'Change' %}">
+          </div>
+        </form>
+
+{% endblock %}
