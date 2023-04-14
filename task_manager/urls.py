@@ -23,8 +23,9 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexView.as_view(), name='root'),
-    path('users/', include('users.urls')),
     path('login/', user_views.LoginUserView.as_view(), name='login'),
     path('logout/', user_views.LogoutUserView.as_view(), name='logout'),
+    path('users/', include('users.urls')),
+    path('statuses/', include('statuses.urls')),
 
 ]
