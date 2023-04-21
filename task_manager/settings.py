@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'users.apps.UsersConfig',
     'statuses.apps.StatusesConfig',
+    'tasks.apps.TasksConfig',
 ]
 
 MIDDLEWARE = [

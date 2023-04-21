@@ -29,7 +29,7 @@
               <a class="nav-link" href="#">{% translate "Labels" %}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">{% translate "Tasks" %}</a>
+              <a class="nav-link" href="{% url 'list_tasks' %}">{% translate "Tasks" %}</a>
             </li>
           {% else %}
             <li class="nav-item">
@@ -38,18 +38,19 @@
           {% endif %}
         </ul>
         <ul class="navbar-nav">
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">{% translate "Log out" %}</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">{% translate "Enter" %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create_users' %}">{% translate "Registration" %}</a>
-            </li>
-          {% endif %}
+            {% if user.is_authenticated %}
+              <form action="/logout/" method="post">
+                {% csrf_token%}
+                <input class="btn nav-link" type="submit" value="{% translate 'Log Out' %}">
+              </form>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">{% translate "Enter" %}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'create_user' %}">{% translate "Registration" %}</a>
+              </li>
+            {% endif %}
         </ul>
       </div>
     </nav>

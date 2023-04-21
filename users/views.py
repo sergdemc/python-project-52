@@ -6,6 +6,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from users.models import User
 from users.forms import RegisterUsersForm, LoginForm
@@ -15,7 +17,7 @@ class UserPermissionCheckMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != request.resolver_match.kwargs['user_id']:
             messages.error(request, 'You do not have rights to change another user.')
-            return redirect(reverse('list_users'))
+            return redirect(reverse('list_user'))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -37,19 +39,28 @@ class UpdateUsersView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UserPerm
     model = User
     form_class = RegisterUsersForm
     template_name = 'users/user_update.html'
-    success_url = reverse_lazy('list_users')
+    success_url = reverse_lazy('list_user')
     pk_url_kwarg = "user_id"
     login_url = reverse_lazy('login')
     success_message = "The user was updated successfully"
 
 
-class DeleteUsersView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UserPermissionCheckMixin, DeleteView):
+class DeleteUsersView(LoginRequiredMixinWithFlash, SuccessMessageMixin, UserPermissionCheckMixin, DeleteView):
     model = User
     template_name = 'users/user_delete.html'
     success_url = reverse_lazy('list_users')
     pk_url_kwarg = "user_id"
     login_url = reverse_lazy('login')
     success_message = "The user was deleted successfully"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+        except models.ProtectedError:
+            messages.error(self.request, _('Cannot delete user because it is in use.'))
+        finally:
+            return redirect(reverse('list_users'))
 
 
 class RegisterUsersView(SuccessMessageMixin, CreateView):
@@ -73,5 +84,10 @@ class LoginUserView(SuccessMessageMixin, LoginView):
 
 class LogoutUserView(LogoutView):
     next_page = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.info(request, "You have successfully logged out.")
+        return super().dispatch(request, *args, **kwargs)
 
 

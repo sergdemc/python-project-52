@@ -28,7 +28,7 @@ class CreateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Creat
     template_name = 'statuses/status_create.html'
     form_class = CreateStatusForm
     success_url = reverse_lazy('list_statuses')
-    success_message = "The status was created successfully"
+    success_message = 'The status was created successfully'
     login_url = reverse_lazy('login')
 
 
@@ -49,3 +49,4 @@ class DeleteStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Delet
     success_url = reverse_lazy('list_statuses')
     success_message = "The status was deleted successfully"
     login_url = reverse_lazy('login')
+    # TO DO check using status before deletion

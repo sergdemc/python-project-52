@@ -8,7 +8,6 @@ class Status(models.Model):
 
     class Meta:
         ordering = ["created_at"]
-        verbose_name_plural = _("statuses")
 
     def __str__(self):
         return self.name
