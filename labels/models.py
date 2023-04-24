@@ -11,3 +11,6 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
+    def can_be_deleted(self):
+        return not self.task_set.exists()

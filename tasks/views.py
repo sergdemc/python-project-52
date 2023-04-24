@@ -10,6 +10,7 @@ from tasks.forms import CreateTaskForm
 from tasks.models import Task
 from statuses.models import Status
 from users.models import User
+from labels.models import Label
 
 
 class LoginRequiredMixinWithFlash(LoginRequiredMixin):
@@ -38,7 +39,8 @@ class ListTasksView(LoginRequiredMixinWithFlash, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         statuses = Status.objects.all()
         users = User.objects.all()
-        context = {'statuses': statuses, 'users': users}
+        labels = Label.objects.all()
+        context = {'statuses': statuses, 'users': users, 'labels': labels}
         return super(ListTasksView, self).get_context_data(**context)
 
 

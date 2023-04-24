@@ -40,6 +40,9 @@
                         <div class="mr-3 ml-2">
                             <select name="label" class="form-control" title="" id="id_label">
                                 <option value="" selected>---------</option>
+                                {% for label in labels %}
+                                <option value="{{ label.pk }}">{{ label.name }}</option>
+                                {% endfor%}
                             </select>
                         </div>
                     </div>

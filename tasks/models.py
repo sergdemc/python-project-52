@@ -1,5 +1,5 @@
-from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 
 class Task(models.Model):
@@ -8,8 +8,9 @@ class Task(models.Model):
     description = models.TextField(blank=True)
     status = models.ForeignKey('statuses.Status', on_delete=models.PROTECT)
     executor = models.ForeignKey(
-        'users.User', on_delete=models.PROTECT, null=True, blank=True,
-        default=None, related_name='executed_tasks')
+        'users.User', on_delete=models.PROTECT, blank=True,
+        related_name='executed_tasks')
+    label = models.ManyToManyField('labels.Label', blank=True, default=None)  # TODO labels
     created_at = models.DateTimeField(_('created date'), auto_now_add=True)
 
     class Meta:

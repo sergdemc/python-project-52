@@ -8,7 +8,9 @@
 
         <form method="post">
             {% csrf_token %}
-            <div class="form-group">{{ form }}</div>
+            {% for field in form %}
+            <div class="form-group">{{ field.label_tag }} {{ field }}</div>
+            {% endfor %}
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" value="{% translate 'Create' %}">
             </div>

@@ -4,6 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.shortcuts import HttpResponseRedirect
 
 from labels.models import Label
 from labels.forms import CreateLabelForm
@@ -49,5 +50,15 @@ class DeleteLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteV
     success_url = reverse_lazy('list_labels')
     success_message = "The label was deleted successfully"
     login_url = reverse_lazy('login')
-    # TO DO check using status before deletion
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.task_set.exists():
+            messages.error(request, 'The label cannot be deleted as it is used in some tasks.')
+            return HttpResponseRedirect(reverse_lazy('list_labels'))
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
