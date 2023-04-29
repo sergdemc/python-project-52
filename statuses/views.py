@@ -1,26 +1,19 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
+from django.utils.translation import gettext_lazy as _
 
+from task_manager.mixins import LoginRequiredMixinWithFlash
 from statuses.models import Status
 from statuses.forms import CreateStatusForm
 
 
-class LoginRequiredMixinWithFlash(LoginRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, 'You are logged out. Please, log in.')
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
-
-
 class ListStatusesView(ListView):
     model = Status
-    template_name = 'statuses/list_statuses.html'
+    template_name = 'statuses/statuses.html'
     context_object_name = 'statuses'
 
 
@@ -29,8 +22,7 @@ class CreateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Creat
     template_name = 'statuses/status_create.html'
     form_class = CreateStatusForm
     success_url = reverse_lazy('list_statuses')
-    success_message = 'The status was created successfully'
-    login_url = reverse_lazy('login')
+    success_message = _('The status was created successfully.')
 
 
 class UpdateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UpdateView):
@@ -39,8 +31,7 @@ class UpdateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Updat
     template_name = 'statuses/status_update.html'
     form_class = CreateStatusForm
     success_url = reverse_lazy('list_statuses')
-    success_message = "The status was changed successfully"
-    login_url = reverse_lazy('login')
+    success_message = _('The status was changed successfully.')
 
 
 class DeleteStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteView):
@@ -48,13 +39,12 @@ class DeleteStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Delet
     pk_url_kwarg = 'status_id'
     template_name = 'statuses/status_delete.html'
     success_url = reverse_lazy('list_statuses')
-    success_message = "The status was deleted successfully"
-    login_url = reverse_lazy('login')
+    success_message = _('The status was deleted successfully.')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.task_set.exists():
-            messages.error(request, 'The status cannot be deleted as it is used in some tasks.')
+            messages.error(request, _("The status can't be deleted as it's used."))
             return HttpResponseRedirect(reverse_lazy('list_statuses'))
         form = self.get_form()
         if form.is_valid():

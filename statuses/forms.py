@@ -10,6 +10,7 @@ class CreateStatusForm(forms.ModelForm):
         model = Status
         fields = ['name']
         widgets = {'name': forms.widgets.TextInput(attrs={'class': 'form-control', 'placeholder': _('Name')})}
+        labels = {'name': _('Name')}
 
     def __init__(self, *args, **kwargs):
         super(CreateStatusForm, self).__init__(*args, **kwargs)

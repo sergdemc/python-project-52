@@ -1,47 +1,48 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
-from django.contrib import messages
-from django.shortcuts import redirect, reverse
+from django import forms
+from django_filters.views import FilterView
+from django_filters import FilterSet, ModelChoiceFilter, BooleanFilter
 
+from task_manager.mixins import LoginRequiredMixinWithFlash, TaskDeletionCheckMixin
 from tasks.forms import CreateTaskForm
 from tasks.models import Task
+from labels.models import Label
 from statuses.models import Status
 from users.models import User
-from labels.models import Label
 
 
-class LoginRequiredMixinWithFlash(LoginRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, 'You are logged out. Please, log in.')
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+class TaskFilter(FilterSet):
+    status = ModelChoiceFilter(queryset=Status.objects.all(), label=_('Status'))
+    executor = ModelChoiceFilter(queryset=User.objects.all(), label=_('Executor'))
+    label = ModelChoiceFilter(queryset=Label.objects.all(), label=_('Label'))
+
+    self_tasks = BooleanFilter(
+        widget=forms.CheckboxInput,
+        method='get_self_tasks',
+        label=_('Own tasks only')
+    )
+
+    def get_self_tasks(self, queryset, name, value):
+        if value:
+            author = getattr(self.request, 'user', None)
+            return queryset.filter(author=author)
+        return queryset
+
+    class Meta:
+        model = Task
+        fields = ['status', 'executor', 'label']
 
 
-class TaskDeletionCheckMixin(AccessMixin):
-    def dispatch(self, request, *args, **kwargs):
-        task_id = request.resolver_match.kwargs['task_id']
-        author_id = Task.objects.get(id=task_id).author.pk
-        if request.user.pk != author_id:
-            messages.error(request, 'A task can only be deleted by its author.')
-            return redirect(reverse('list_tasks'))
-        return super().dispatch(request, *args, **kwargs)
-
-
-class ListTasksView(LoginRequiredMixinWithFlash, ListView):
+class ListTasksView(LoginRequiredMixinWithFlash, FilterView):
     model = Task
-    template_name = 'tasks/list_tasks.html'
+    template_name = 'tasks/tasks.html'
     context_object_name = 'tasks'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        statuses = Status.objects.all()
-        users = User.objects.all()
-        labels = Label.objects.all()
-        context = {'statuses': statuses, 'users': users, 'labels': labels}
-        return super(ListTasksView, self).get_context_data(**context)
+    filterset_class = TaskFilter
+    extra_context = {'button_text': _('Show')}
 
 
 class CreateTasksView(LoginRequiredMixinWithFlash, SuccessMessageMixin, CreateView):
@@ -49,8 +50,7 @@ class CreateTasksView(LoginRequiredMixinWithFlash, SuccessMessageMixin, CreateVi
     form_class = CreateTaskForm
     template_name = 'tasks/task_create.html'
     success_url = reverse_lazy('list_tasks')
-    success_message = 'The task was created successfully'
-    login_url = reverse_lazy('login')
+    success_message = _('The task was created successfully.')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -62,8 +62,7 @@ class UpdateTasksView(LoginRequiredMixinWithFlash, SuccessMessageMixin, UpdateVi
     form_class = CreateTaskForm
     template_name = 'tasks/task_update.html'
     success_url = reverse_lazy('list_tasks')
-    success_message = 'The task was updated successfully'
-    login_url = reverse_lazy('login')
+    success_message = _('The task was updated successfully.')
     pk_url_kwarg = 'task_id'
 
 
@@ -71,8 +70,7 @@ class DeleteTasksView(LoginRequiredMixinWithFlash, TaskDeletionCheckMixin, Succe
     model = Task
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('list_tasks')
-    success_message = "The task was deleted successfully"
-    login_url = reverse_lazy('login')
+    success_message = _('The task was deleted successfully')
     pk_url_kwarg = 'task_id'
 
 

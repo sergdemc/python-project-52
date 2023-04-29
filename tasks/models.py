@@ -10,8 +10,8 @@ class Task(models.Model):
     executor = models.ForeignKey(
         'users.User', on_delete=models.PROTECT, blank=True,
         related_name='executed_tasks')
-    label = models.ManyToManyField('labels.Label', blank=True, default=None)  # TODO labels
-    created_at = models.DateTimeField(_('created date'), auto_now_add=True)
+    label = models.ManyToManyField('labels.Label', blank=True, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["created_at"]

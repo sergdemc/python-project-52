@@ -1,37 +1,19 @@
-from django.shortcuts import render, redirect, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from task_manager.mixins import UserPermissionCheckMixin, LoginRequiredMixinWithFlash, UserDeletionPermissionMixin
 from users.models import User
 from users.forms import RegisterUsersForm, LoginForm
 
 
-class UserPermissionCheckMixin(AccessMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.pk != request.resolver_match.kwargs['user_id']:
-            messages.error(request, 'You do not have rights to change another user.')
-            return redirect(reverse('list_user'))
-        return super().dispatch(request, *args, **kwargs)
-
-
-class LoginRequiredMixinWithFlash(LoginRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, 'You are logged out. Please, log in.')
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
-
-
 class ListUsersView(ListView):
     model = User
-    template_name = 'users/list_users.html'
+    template_name = 'users/users.html'
     context_object_name = 'users'
 
 
@@ -39,28 +21,18 @@ class UpdateUsersView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UserPerm
     model = User
     form_class = RegisterUsersForm
     template_name = 'users/user_update.html'
-    success_url = reverse_lazy('list_user')
-    pk_url_kwarg = "user_id"
-    login_url = reverse_lazy('login')
-    success_message = "The user was updated successfully"
+    success_url = reverse_lazy('list_users')
+    pk_url_kwarg = 'user_id'
+    success_message = _('The user was updated successfully.')
 
 
-class DeleteUsersView(LoginRequiredMixinWithFlash, SuccessMessageMixin, UserPermissionCheckMixin, DeleteView):
+class DeleteUsersView(LoginRequiredMixinWithFlash, SuccessMessageMixin, UserDeletionPermissionMixin,
+                      UserPermissionCheckMixin, DeleteView):
     model = User
     template_name = 'users/user_delete.html'
     success_url = reverse_lazy('list_users')
-    pk_url_kwarg = "user_id"
-    login_url = reverse_lazy('login')
-    success_message = "The user was deleted successfully"
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        try:
-            self.object.delete()
-        except models.ProtectedError:
-            messages.error(self.request, _('Cannot delete user because it is in use.'))
-        finally:
-            return redirect(reverse('list_users'))
+    pk_url_kwarg = 'user_id'
+    success_message = _('The user was deleted successfully.')
 
 
 class RegisterUsersView(SuccessMessageMixin, CreateView):
@@ -68,17 +40,18 @@ class RegisterUsersView(SuccessMessageMixin, CreateView):
     template_name = 'users/user_create.html'
     form_class = RegisterUsersForm
     success_url = reverse_lazy('login')
-    success_message = "The user was created successfully"
+    success_message = _('The user was created successfully.')
 
 
 class LoginUserView(SuccessMessageMixin, LoginView):
     template_name = 'users/login.html'
     next_page = '/'
     authentication_form = LoginForm
-    success_message = "You are logged in successfully"
+    success_message = _('You are logged in successfully.')
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Please enter the correct username and password. Both fields can be case sensitive.')
+        messages.error(self.request, _('Please enter the correct username and password. Both fields can be case '
+                                       'sensitive.'))
         return super(LoginUserView, self).form_invalid(form)
 
 
@@ -87,7 +60,7 @@ class LogoutUserView(LogoutView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.info(request, "You have successfully logged out.")
+            messages.info(request, _('You have successfully logged out.'))
         return super().dispatch(request, *args, **kwargs)
 
 

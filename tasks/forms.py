@@ -22,6 +22,7 @@ class CreateTaskForm(forms.ModelForm):
             'name': forms.widgets.TextInput(attrs={'class': 'form-control', 'placeholder': _('Name')}),
             'description': forms.widgets.Textarea(attrs={'class': 'form-control', 'placeholder': _('Description')})
         }
+        labels = {'name': _('Name'), 'description': _('Description')}
 
     def __init__(self, *args, **kwargs):
         super(CreateTaskForm, self).__init__(*args, **kwargs)

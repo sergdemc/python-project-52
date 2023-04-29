@@ -1,26 +1,19 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
+from django.utils.translation import gettext_lazy as _
 
+from task_manager.mixins import LoginRequiredMixinWithFlash
 from labels.models import Label
 from labels.forms import CreateLabelForm
 
 
-class LoginRequiredMixinWithFlash(LoginRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, 'You are logged out. Please, log in.')
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
-
-
 class ListLabelsView(ListView):
     model = Label
-    template_name = 'labels/list_labels.html'
+    template_name = 'labels/labels.html'
     context_object_name = 'labels'
 
 
@@ -29,8 +22,7 @@ class CreateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, CreateV
     template_name = 'labels/label_create.html'
     form_class = CreateLabelForm
     success_url = reverse_lazy('list_labels')
-    success_message = 'The label was created successfully'
-    login_url = reverse_lazy('login')
+    success_message = _('The label was created successfully')
 
 
 class UpdateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UpdateView):
@@ -39,8 +31,7 @@ class UpdateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UpdateV
     template_name = 'labels/label_update.html'
     form_class = CreateLabelForm
     success_url = reverse_lazy('list_labels')
-    success_message = "The label was changed successfully"
-    login_url = reverse_lazy('login')
+    success_message = _('The label was changed successfully')
 
 
 class DeleteLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteView):
@@ -48,13 +39,12 @@ class DeleteLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteV
     pk_url_kwarg = 'label_id'
     template_name = 'labels/label_delete.html'
     success_url = reverse_lazy('list_labels')
-    success_message = "The label was deleted successfully"
-    login_url = reverse_lazy('login')
+    success_message = _('The label was deleted successfully')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.task_set.exists():
-            messages.error(request, 'The label cannot be deleted as it is used in some tasks.')
+            messages.error(request, _("The label can't be deleted as it's used"))
             return HttpResponseRedirect(reverse_lazy('list_labels'))
         form = self.get_form()
         if form.is_valid():
