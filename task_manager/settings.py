@@ -161,5 +161,3 @@ ROLLBAR = {
 }
 
 rollbar.init(**ROLLBAR)
-
-from django.utils.timezone import z
