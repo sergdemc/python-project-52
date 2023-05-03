@@ -6,7 +6,7 @@ on:
 
 env:
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Install python
         uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: 3.10.0
 
       - name: Install dependencies
         run: |
