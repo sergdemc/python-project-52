@@ -3,6 +3,9 @@
 __pycache__/
 .env
 *.sqlite3
-staticfiles/
+static/
 .idea
+*.log
+htmlcov
+.coverage
 .DS_Store

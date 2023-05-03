@@ -24,9 +24,9 @@
                         <td>{{ label.name }}</td>
                         <td>{{ label.created_at|date:"d.m.Y" }} {{ label.created_at|date:"H:i" }}</td>
                         <td>
-                            <a href="{% url 'update_label' label_id=label.pk %}">{% translate 'Change' %}</a>
+                            <a href="{% url 'update_label' pk=label.pk %}">{% translate 'Change' %}</a>
                             <br>
-                            <a href="{% url 'delete_label' label_id=label.pk %}">{% translate 'Delete' %}</a>
+                            <a href="{% url 'delete_label' pk=label.pk %}">{% translate 'Delete' %}</a>
                         </td>
                     </tr>
                 {% endfor %}

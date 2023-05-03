@@ -121,4 +121,3 @@ class TaskFilterTestCase(SetupTestCase):
         self.assertEqual(tasks.count(), 2)
         self.assertCountEqual(tasks, [self.task1, self.task2])
         self.client.logout()
-

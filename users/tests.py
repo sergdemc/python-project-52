@@ -27,4 +27,3 @@ class UserCRUDTest(TestCase):
         user_count = User.objects.count()
         User.objects.get(username='user3').delete()
         self.assertEqual(User.objects.count(), user_count - 1)
-

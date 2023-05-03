@@ -1,15 +1,15 @@
-from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
 class Task(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    author = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='authored_tasks')
+    author = models.ForeignKey('users.User', on_delete=models.PROTECT,
+                               related_name='authored_tasks')
     description = models.TextField(blank=True)
     status = models.ForeignKey('statuses.Status', on_delete=models.PROTECT)
     executor = models.ForeignKey(
         'users.User', on_delete=models.PROTECT, blank=True,
-        related_name='executed_tasks')
+        related_name='executed_tasks', null=True)
     label = models.ManyToManyField('labels.Label', blank=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
 

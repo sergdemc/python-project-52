@@ -17,7 +17,9 @@ class ListStatusesView(ListView):
     context_object_name = 'statuses'
 
 
-class CreateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, CreateView):
+class CreateStatusesView(SuccessMessageMixin,
+                         LoginRequiredMixinWithFlash,
+                         CreateView):
     model = Status
     template_name = 'statuses/status_create.html'
     form_class = CreateStatusForm
@@ -25,18 +27,22 @@ class CreateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Creat
     success_message = _('The status was created successfully.')
 
 
-class UpdateStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UpdateView):
+class UpdateStatusesView(SuccessMessageMixin,
+                         LoginRequiredMixinWithFlash,
+                         UpdateView):
     model = Status
-    pk_url_kwarg = 'status_id'
+    pk_url_kwarg = 'pk'
     template_name = 'statuses/status_update.html'
     form_class = CreateStatusForm
     success_url = reverse_lazy('list_statuses')
     success_message = _('The status was changed successfully.')
 
 
-class DeleteStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteView):
+class DeleteStatusesView(SuccessMessageMixin,
+                         LoginRequiredMixinWithFlash,
+                         DeleteView):
     model = Status
-    pk_url_kwarg = 'status_id'
+    pk_url_kwarg = 'pk'
     template_name = 'statuses/status_delete.html'
     success_url = reverse_lazy('list_statuses')
     success_message = _('The status was deleted successfully.')
@@ -44,7 +50,7 @@ class DeleteStatusesView(SuccessMessageMixin, LoginRequiredMixinWithFlash, Delet
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.task_set.exists():
-            messages.error(request, _("The status can't be deleted as it's used."))
+            messages.error(request, _("The status can't be deleted as it's used."))   # noqa: 501
             return HttpResponseRedirect(reverse_lazy('list_statuses'))
         form = self.get_form()
         if form.is_valid():

@@ -25,4 +25,3 @@ class LabelCRUDTest(TestCase):
         label_count = Label.objects.count()
         Label.objects.get(name='label3').delete()
         self.assertEqual(Label.objects.count(), label_count - 1)
-

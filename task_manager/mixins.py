@@ -20,18 +20,20 @@ class LoginRequiredMixinWithFlash(LoginRequiredMixin):
 
 class UserPermissionCheckMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
-        if request.user.pk != request.resolver_match.kwargs['user_id']:
-            messages.error(request, _('You do not have rights to change another user.'))
+        if request.user.pk != request.resolver_match.kwargs['pk']:
+            messages.error(request, _('You do not have rights '
+                                      'to change another user.'))
             return redirect(reverse('list_users'))
         return super().dispatch(request, *args, **kwargs)
 
 
 class TaskDeletionCheckMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
-        task_id = request.resolver_match.kwargs['task_id']
+        task_id = request.resolver_match.kwargs['pk']
         author_id = Task.objects.get(id=task_id).author.pk
         if request.user.pk != author_id:
-            messages.error(request, _('A task can only be deleted by its author.'))
+            messages.error(request, _('A task can only be '
+                                      'deleted by its author.'))
             return redirect(reverse('list_tasks'))
         return super().dispatch(request, *args, **kwargs)
 
@@ -41,8 +43,10 @@ class UserDeletionPermissionMixin:
         self.object = self.get_object()
         try:
             self.object.delete()
-            messages.success(self.request, _('The user was deleted successfully.'))
+            messages.success(self.request, _('The user was deleted '
+                                             'successfully.'))
         except models.ProtectedError:
-            messages.error(self.request, _('Cannot delete user because it is in use.'))
+            messages.error(self.request, _('Cannot delete user '
+                                           'because it is in use.'))
         finally:
             return redirect(reverse('list_users'))

@@ -17,7 +17,9 @@ class ListLabelsView(ListView):
     context_object_name = 'labels'
 
 
-class CreateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, CreateView):
+class CreateLabelsView(SuccessMessageMixin,
+                       LoginRequiredMixinWithFlash,
+                       CreateView):
     model = Label
     template_name = 'labels/label_create.html'
     form_class = CreateLabelForm
@@ -25,18 +27,22 @@ class CreateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, CreateV
     success_message = _('The label was created successfully')
 
 
-class UpdateLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, UpdateView):
+class UpdateLabelsView(SuccessMessageMixin,
+                       LoginRequiredMixinWithFlash,
+                       UpdateView):
     model = Label
-    pk_url_kwarg = 'label_id'
+    pk_url_kwarg = 'pk'
     template_name = 'labels/label_update.html'
     form_class = CreateLabelForm
     success_url = reverse_lazy('list_labels')
     success_message = _('The label was changed successfully')
 
 
-class DeleteLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteView):
+class DeleteLabelsView(SuccessMessageMixin,
+                       LoginRequiredMixinWithFlash,
+                       DeleteView):
     model = Label
-    pk_url_kwarg = 'label_id'
+    pk_url_kwarg = 'pk'
     template_name = 'labels/label_delete.html'
     success_url = reverse_lazy('list_labels')
     success_message = _('The label was deleted successfully')
@@ -44,11 +50,10 @@ class DeleteLabelsView(SuccessMessageMixin, LoginRequiredMixinWithFlash, DeleteV
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object.task_set.exists():
-            messages.error(request, _("The label can't be deleted as it's used"))
+            messages.error(request, _("The label can't be deleted as it's used"))  # noqa: 501
             return HttpResponseRedirect(reverse_lazy('list_labels'))
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-

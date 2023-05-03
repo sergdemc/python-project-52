@@ -37,15 +37,15 @@
                 {% for obj in filter.qs %}
                     <tr>
                         <td>{{ obj.pk }}</td>
-                        <td><a href="{% url 'detail_task' task_id=obj.pk %}">{{ obj.name }}</a></td>
+                        <td><a href="{% url 'detail_task' pk=obj.pk %}">{{ obj.name }}</a></td>
                         <td>{{ obj.status }}</td>
                         <td>{{ obj.author }}</td>
                         <td>{{ obj.executor }}</td>
                         <td>{{ obj.created_at|date:"d.m.Y" }} {{ obj.created_at|date:"H:i" }}</td>
                         <td>
-                            <a href="{% url 'update_task' task_id=obj.pk %}">{% translate 'Change' %}</a>
+                            <a href="{% url 'update_task' pk=obj.pk %}">{% translate 'Change' %}</a>
                             <br>
-                            <a href="{% url 'delete_task' task_id=obj.pk %}">{% translate 'Delete' %}</a>
+                            <a href="{% url 'delete_task' pk=obj.pk %}">{% translate 'Delete' %}</a>
                         </td>
                     </tr>
                 {% endfor %}
