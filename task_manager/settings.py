@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     'web-production-fb23.up.railway.app'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-fb23.up.railway.app'
+]
+
 
 # Application definition
 
@@ -92,7 +96,7 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+#
 # db_from_env = dj_database_url.config(conn_max_age=600)
 # DATABASES['default'].update(db_from_env)
 
@@ -150,11 +154,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-fb23.up.railway.app'
-]
-
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
