@@ -92,9 +92,9 @@ django-bootstrap4==22.3 ; python_full_version >= "3.10.5" and python_full_versio
 django-filter==23.1 ; python_full_version >= "3.10.5" and python_full_version < "4.0.0" \
     --hash=sha256:dee5dcf2cea4d7f767e271b6d01f767fce7500676d5e5dc58dac8154000b87df \
     --hash=sha256:e3c52ad83c32fb5882125105efb5fea2a1d6a85e7dc64b04ef52edbf14451b6c
-django==4.2.1 ; python_full_version >= "3.10.5" and python_full_version < "4.0.0" \
-    --hash=sha256:066b6debb5ac335458d2a713ed995570536c8b59a580005acb0732378d5eb1ee \
-    --hash=sha256:7efa6b1f781a6119a10ac94b4794ded90db8accbe7802281cd26f8664ffed59c
+django==4.1.7 ; python_full_version >= "3.10.5" and python_full_version < "4.0.0" \
+    --hash=sha256:44f714b81c5f190d9d2ddad01a532fe502fa01c4cb8faf1d081f4264ed15dcd8 \
+    --hash=sha256:f2f431e75adc40039ace496ad3b9f17227022e8b11566f4b363da44c7e44761e
 gunicorn==20.1.0 ; python_full_version >= "3.10.5" and python_full_version < "4.0.0" \
     --hash=sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e \
     --hash=sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8
