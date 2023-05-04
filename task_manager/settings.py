@@ -27,9 +27,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
-    '*',
     'webserver',
-    'web-production-fb23.up.railway.app'
+    'web-production-fb23.up.railway.app',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
