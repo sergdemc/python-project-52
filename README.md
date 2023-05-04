@@ -20,7 +20,7 @@ Before installing the package make sure you have Python version 3.8 or higher in
 
 ```bash
 >> python --version
-Python 3.8+
+Python 3.10+
 ```
 
 #### Poetry
