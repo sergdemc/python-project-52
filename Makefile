@@ -28,8 +28,8 @@ test:
 
 test-coverage:
 	poetry run coverage run manage.py test
-	poetry run coverage html --omit='*/python-project-83/*'
-	poetry run coverage report --omit='*/python-project-83/*'
+	poetry run coverage report -m --omit='*/python-project-83/*'
+	poetry run coverage xml --omit='*/python-project-83/*'
 
 deploy:
 	git push
