@@ -1,4 +1,5 @@
 [![Actions Status](https://github.com/sergdemc/python-project-52/workflows/hexlet-check/badge.svg)](https://github.com/sergdemc/python-project-52/actions)
+[![run tests](https://github.com/sergdemc/python-project-52/actions/workflows/run_test.yml/badge.svg)](https://github.com/sergdemc/python-project-52/actions/workflows/run_test.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7e17dccfb736bd7985d2/maintainability)](https://codeclimate.com/github/sergdemc/python-project-52/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/7e17dccfb736bd7985d2/test_coverage)](https://codeclimate.com/github/sergdemc/python-project-52/test_coverage)
 
