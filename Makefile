@@ -1,13 +1,16 @@
 install:
 	poetry install
 
-migrate:
+migrations:
 	poetry run python manage.py makemigrations
+
+migrate:
 	poetry run python manage.py migrate
 
 setup:
 	cp -n .env.example .env || true
 	make install
+	make migrations
 	make migrate
 
 PORT ?= 8000
