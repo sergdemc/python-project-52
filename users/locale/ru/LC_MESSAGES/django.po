@@ -41,11 +41,11 @@ msgstr "Подтверждение пароля"
 
 #: views.py:26
 msgid "The user was updated successfully."
-msgstr "Пользователь успешно изменен"
+msgstr "Пользователь успешно изменён"
 
 #: views.py:35
 msgid "The user was deleted successfully."
-msgstr "Пользователь успешно удален"
+msgstr "Пользователь успешно удалён"
 
 #: views.py:43
 msgid "The user was created successfully."
