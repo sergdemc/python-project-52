@@ -4,6 +4,9 @@ install:
 migrations:
 	poetry run python manage.py makemigrations
 
+migrate-auth:
+	poetry run python manage.py migrate auth
+
 migrate:
 	poetry run python manage.py migrate
 
