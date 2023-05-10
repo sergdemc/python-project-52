@@ -242,7 +242,7 @@ msgstr "Изменение задачи"
 
 #: task_manager/templates/users/login.html:9
 msgid "Enter"
-msgstr "Войти"
+msgstr "Вход"
 
 #: task_manager/templates/users/user_delete.html:8
 msgid "Delete user"
@@ -302,7 +302,7 @@ msgstr "Вы залогинены"
 
 #: users/views.py:63
 msgid "Log in"
-msgstr "Вход"
+msgstr "Войти"
 
 #: users/views.py:71
 msgid "You are logged out successfully."
