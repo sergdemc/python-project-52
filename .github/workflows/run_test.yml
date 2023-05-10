@@ -30,7 +30,6 @@ jobs:
 
       - name: Run migrations
         run: |
-          make migrate-auth
           make migrate
 
       - name: Run tests
