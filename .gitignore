@@ -9,3 +9,4 @@ static/
 htmlcov
 .coverage
 .DS_Store
+*.xml

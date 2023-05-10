@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from task_manager.mixins import LoginRequiredMixinWithFlash
 from statuses.models import Status
-from statuses.forms import CreateStatusForm
+from statuses.forms import StatusForm
 
 
 class ListStatusesView(ListView):
@@ -22,9 +22,10 @@ class CreateStatusesView(SuccessMessageMixin,
                          CreateView):
     model = Status
     template_name = 'statuses/status_create.html'
-    form_class = CreateStatusForm
+    form_class = StatusForm
     success_url = reverse_lazy('list_statuses')
     success_message = _('The status was created successfully.')
+    extra_context = {'button_text': _('Create')}
 
 
 class UpdateStatusesView(SuccessMessageMixin,
@@ -33,9 +34,10 @@ class UpdateStatusesView(SuccessMessageMixin,
     model = Status
     pk_url_kwarg = 'pk'
     template_name = 'statuses/status_update.html'
-    form_class = CreateStatusForm
+    form_class = StatusForm
     success_url = reverse_lazy('list_statuses')
     success_message = _('The status was changed successfully.')
+    extra_context = {'button_text': _('Change')}
 
 
 class DeleteStatusesView(SuccessMessageMixin,

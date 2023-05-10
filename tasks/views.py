@@ -9,7 +9,7 @@ from django_filters import FilterSet, ModelChoiceFilter, BooleanFilter
 
 from task_manager.mixins import LoginRequiredMixinWithFlash, \
     TaskDeletionCheckMixin
-from tasks.forms import CreateTaskForm
+from tasks.forms import TaskForm
 from tasks.models import Task
 from labels.models import Label
 from statuses.models import Status
@@ -17,13 +17,18 @@ from users.models import User
 
 
 class TaskFilter(FilterSet):
-    status = ModelChoiceFilter(queryset=Status.objects.all(),
-                               label=_('Status'))
-    executor = ModelChoiceFilter(queryset=User.objects.all(),
-                                 label=_('Executor'))
-    label = ModelChoiceFilter(queryset=Label.objects.all(),
-                              label=_('Label'))
-
+    status = ModelChoiceFilter(
+        queryset=Status.objects.all(),
+        label=_('Status')
+    )
+    executor = ModelChoiceFilter(
+        queryset=User.objects.all(),
+        label=_('Executor')
+    )
+    label = ModelChoiceFilter(
+        queryset=Label.objects.all(),
+        label=_('Label')
+    )
     self_tasks = BooleanFilter(
         widget=forms.CheckboxInput,
         method='get_self_tasks',
@@ -38,7 +43,7 @@ class TaskFilter(FilterSet):
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'label']
+        fields = ['status', 'executor', 'label', 'self_tasks']
 
 
 class ListTasksView(LoginRequiredMixinWithFlash,
@@ -54,10 +59,11 @@ class CreateTasksView(LoginRequiredMixinWithFlash,
                       SuccessMessageMixin,
                       CreateView):
     model = Task
-    form_class = CreateTaskForm
+    form_class = TaskForm
     template_name = 'tasks/task_create.html'
     success_url = reverse_lazy('list_tasks')
     success_message = _('The task was created successfully.')
+    extra_context = {'button_text': _('Create')}
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -68,11 +74,12 @@ class UpdateTasksView(LoginRequiredMixinWithFlash,
                       SuccessMessageMixin,
                       UpdateView):
     model = Task
-    form_class = CreateTaskForm
+    form_class = TaskForm
     template_name = 'tasks/task_update.html'
     success_url = reverse_lazy('list_tasks')
     success_message = _('The task was updated successfully.')
     pk_url_kwarg = 'pk'
+    extra_context = {'button_text': _('Change')}
 
 
 class DeleteTasksView(LoginRequiredMixinWithFlash,

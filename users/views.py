@@ -5,11 +5,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import AuthenticationForm
 
 from task_manager.mixins import UserPermissionCheckMixin, \
     LoginRequiredMixinWithFlash, UserDeletionPermissionMixin
 from users.models import User
-from users.forms import RegisterUsersForm, LoginForm
+from users.forms import RegisterUsersForm
 
 
 class ListUsersView(ListView):
@@ -28,6 +29,7 @@ class UpdateUsersView(SuccessMessageMixin,
     success_url = reverse_lazy('list_users')
     pk_url_kwarg = 'pk'
     success_message = _('The user was updated successfully.')
+    extra_context = {'button_text': _('Change')}
 
 
 class DeleteUsersView(LoginRequiredMixinWithFlash,
@@ -49,27 +51,22 @@ class RegisterUsersView(SuccessMessageMixin,
     form_class = RegisterUsersForm
     success_url = reverse_lazy('login')
     success_message = _('The user was created successfully.')
+    extra_context = {'button_text': _('Create')}
 
 
 class LoginUserView(SuccessMessageMixin,
                     LoginView):
+    form_class = AuthenticationForm
     template_name = 'users/login.html'
-    next_page = '/'
-    authentication_form = LoginForm
+    next_page = reverse_lazy('root')
     success_message = _('You are logged in successfully.')
-
-    def form_invalid(self, form):
-        messages.error(
-            self.request, _('Please enter the correct username and password. '
-                            'Both fields can be case sensitive.')
-        )
-        return super(LoginUserView, self).form_invalid(form)
+    extra_context = {'button_text': _('Log in')}
 
 
 class LogoutUserView(LogoutView):
-    next_page = '/'
+    next_page = reverse_lazy('root')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            messages.info(request, _('You have successfully logged out.'))
+            messages.info(request, _('You are logged out successfully.'))
         return super().dispatch(request, *args, **kwargs)

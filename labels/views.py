@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from task_manager.mixins import LoginRequiredMixinWithFlash
 from labels.models import Label
-from labels.forms import CreateLabelForm
+from labels.forms import LabelForm
 
 
 class ListLabelsView(ListView):
@@ -22,9 +22,10 @@ class CreateLabelsView(SuccessMessageMixin,
                        CreateView):
     model = Label
     template_name = 'labels/label_create.html'
-    form_class = CreateLabelForm
+    form_class = LabelForm
     success_url = reverse_lazy('list_labels')
     success_message = _('The label was created successfully')
+    extra_context = {'button_text': _('Create')}
 
 
 class UpdateLabelsView(SuccessMessageMixin,
@@ -33,9 +34,10 @@ class UpdateLabelsView(SuccessMessageMixin,
     model = Label
     pk_url_kwarg = 'pk'
     template_name = 'labels/label_update.html'
-    form_class = CreateLabelForm
+    form_class = LabelForm
     success_url = reverse_lazy('list_labels')
     success_message = _('The label was changed successfully')
+    extra_context = {'button_text': _('Change')}
 
 
 class DeleteLabelsView(SuccessMessageMixin,
