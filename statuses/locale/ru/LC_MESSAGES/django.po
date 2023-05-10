@@ -29,11 +29,11 @@ msgstr "Статус успешно создан"
 
 #: views.py:34
 msgid "The status was changed successfully."
-msgstr "Статус успешно изменен"
+msgstr "Статус успешно изменён"
 
 #: views.py:42
 msgid "The status was deleted successfully."
-msgstr "Статус успешно удален"
+msgstr "Статус успешно удалён"
 
 #: views.py:47
 msgid "The status can't be deleted as it's used."
