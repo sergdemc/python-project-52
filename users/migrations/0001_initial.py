@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('django.contrib.auth', '0013_alter_user_options'),
+
     ]
 
     operations = [
