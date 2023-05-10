@@ -49,7 +49,7 @@ msgstr "Пользователь успешно удален"
 
 #: views.py:43
 msgid "The user was created successfully."
-msgstr "Пользователь успешно создан"
+msgstr "Пользователь успешно зарегистрирован"
 
 #: views.py:50
 msgid "You are logged in successfully."
