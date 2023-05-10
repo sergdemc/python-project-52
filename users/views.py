@@ -51,7 +51,7 @@ class RegisterUsersView(SuccessMessageMixin,
     form_class = RegisterUsersForm
     success_url = reverse_lazy('login')
     success_message = _('The user was created successfully.')
-    extra_context = {'button_text': _('Create')}
+    extra_context = {'button_text': _('Sign in')}
 
 
 class LoginUserView(SuccessMessageMixin,

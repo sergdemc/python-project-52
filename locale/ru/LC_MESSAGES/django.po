@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-10 19:40+0300\n"
+"POT-Creation-Date: 2023-05-10 20:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
 #: labels/models.py:9 statuses/models.py:9
 #: task_manager/templates/labels/labels.html:15
 #: task_manager/templates/statuses/statuses.html:15
@@ -44,7 +45,7 @@ msgstr "Метки"
 msgid "The label was created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:28 statuses/views.py:28 tasks/views.py:66 users/views.py:54
+#: labels/views.py:28 statuses/views.py:28 tasks/views.py:66
 msgid "Create"
 msgstr "Создать"
 
@@ -295,6 +296,10 @@ msgstr "Пользователь успешно изменён"
 #: users/views.py:53
 msgid "The user was created successfully."
 msgstr "Пользователь успешно зарегистрирован"
+
+#: users/views.py:54
+msgid "Sign in"
+msgstr "Зарегистрировать"
 
 #: users/views.py:62
 msgid "You are logged in successfully."
