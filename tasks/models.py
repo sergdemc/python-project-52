@@ -49,6 +49,5 @@ class Task(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["created_at"]
         verbose_name = _('Task')
         verbose_name_plural = _('Tasks')

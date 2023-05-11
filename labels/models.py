@@ -20,6 +20,5 @@ class Label(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["created_at"]
         verbose_name = _('Label')
         verbose_name_plural = _('Labels')

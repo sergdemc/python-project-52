@@ -17,6 +17,5 @@ class Status(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["created_at"]
         verbose_name = _('Status')
         verbose_name_plural = _('Statuses')
