@@ -51,7 +51,7 @@ class DeleteStatusesView(SuccessMessageMixin,
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.task_set.exists():
+        if self.object.status.exists():
             messages.error(request, _("The status can't be deleted as it's used."))   # noqa: 501
             return HttpResponseRedirect(reverse_lazy('list_statuses'))
         form = self.get_form()

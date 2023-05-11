@@ -51,7 +51,7 @@ class DeleteLabelsView(SuccessMessageMixin,
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.task_set.exists():
+        if self.object.labels.exists():
             messages.error(request, _("The label can't be deleted as it's used"))  # noqa: 501
             return HttpResponseRedirect(reverse_lazy('list_labels'))
         form = self.get_form()
