@@ -25,7 +25,7 @@ class TaskFilter(FilterSet):
         queryset=User.objects.all(),
         label=_('Executor')
     )
-    label = ModelChoiceFilter(
+    labels = ModelChoiceFilter(
         queryset=Label.objects.all(),
         label=_('Label')
     )
@@ -43,7 +43,7 @@ class TaskFilter(FilterSet):
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'label', 'self_tasks']
+        fields = ['status', 'executor', 'labels', 'self_tasks']
 
 
 class ListTasksView(LoginRequiredMixinWithFlash,

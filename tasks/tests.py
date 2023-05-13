@@ -41,9 +41,9 @@ class SetupTestCase(TestCase):
             author=self.user2,
         )
 
-        self.task1.label.set([self.label1, self.label2])
-        self.task2.label.set([self.label1])
-        self.task3.label.set([self.label2])
+        self.task1.labels.set([self.label1, self.label2])
+        self.task2.labels.set([self.label1])
+        self.task3.labels.set([self.label2])
 
 
 class TaskCRUDTest(SetupTestCase):
@@ -105,7 +105,7 @@ class TaskFilterTestCase(SetupTestCase):
     def test_filter_by_label(self):
         self.client.force_login(user=self.user1)
         url = reverse('list_tasks')
-        response = self.client.get(url, {'label': self.label1.id})
+        response = self.client.get(url, {'labels': self.label1.id})
         self.assertEqual(response.status_code, 200)
         tasks = response.context_data['filter'].qs
         self.assertEqual(tasks.count(), 2)
